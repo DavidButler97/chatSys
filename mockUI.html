@@ -3,15 +3,26 @@
 <meta charset="UTF-8">
 <title>Page Title</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="">
 <style>
 </style>
 
 <body>
 
     <div id="fakeClient" style="height: 500px; width: 500px; border-color: black; border: 2px; border-style: solid">
-        <div id="textDisplay" style="height: 200px; width: 200px; border-color: black; border: 2px; border-style: solid"></div>
-        <input id="textInput" style="height: 30px; width: 200px; border-color: black; border: 2px; border-style: solid"></div>
+        <div id="flexBox" style="height: 500px; width: 500px; display:flex;">
+            <div id="setOne" style="height: 300px; width: 300px;">    
+            <div id="textDisplay" style="height: 300px; width: 300px; border-color: black; border: 2px; border-style: solid; scroll-behavior: auto;"></div>
+            <div style="width: 500px; display:flex;">
+            <input id="textInput" style="height: 30px; width: 300px; border-color: black; border: 2px; border-style: solid">
+            <button id="inputTrigger" style="float:right;" onclick="sendMessage()">SEND</button>
+            </div>
+            </div>
+        <div id="friendsList" style="height: 300px; width: 100px; border-color: black; border: 2px; border-style: solid; float:right; display: flex; margin-left: auto;">
+        </div>
+        </div> 
+        
+    </div>
+    
     </div>
 
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
@@ -20,20 +31,22 @@
 </script>
 
 <script>
+
+    const textDisplay = document.getElementById("textDisplay");
+
     const socket = io("http://localhost:3000");
 
 
     socket.on("connect", () => {
   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-  
-  socket.on("message", (arg) => {
-  console.log(arg);
+
 });
 
-
-socket.emit("message", "this is the message to the server");
-
-
+socket.on("message", (arg) => {
+  console.log(arg);
+  const newParagraph = document.createElement("paragraph");
+  newParagraph.innerHTML = arg;
+  textDisplay.insertBefore(newParagraph, null);
 });
 
 
@@ -41,19 +54,21 @@ socket.on("disconnect", (reason) => {
   console.log(`${socket.id} and reason: ${reason}`); // undefined
 });
 // function to send a new message
+
 function sendMessage() 
     {
+        console.log("message was sent");
       // get input element where the message is typed
-      const inputFieldID = document.getElementById('inputFieldID');
+      const textInput = document.getElementById('textInput');
 
       // get the message itself
-      const message = inputFieldID.value;
+      const message = textInput.value;
 
       // clear input field after getting the message
-      inputFieldID.value = '';
+      textInput.value = '';
 
       // emit the 'message' event to the server with username and the message as the data
-      socket.emit('message', { username: 'username', message });
+      socket.emit('message', { username: 'username', message: message });
     }
 </script>
 
