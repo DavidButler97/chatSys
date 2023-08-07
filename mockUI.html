@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Page Title</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="">
+<style>
+</style>
+
+<body>
+
+    <div id="fakeClient" style="height: 500px; width: 500px; border-color: black; border: 2px; border-style: solid">
+        <div id="textDisplay" style="height: 200px; width: 200px; border-color: black; border: 2px; border-style: solid"></div>
+        <input id="textInput" style="height: 30px; width: 200px; border-color: black; border: 2px; border-style: solid"></div>
+    </div>
+
+
+
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+<script type="module">
+    import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+</script>
+
+<script>
+
+    const socket = io("http://localhost:3000");
+
+    socket.on("connect", () => {
+  console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+
+  socket.on("message", (arg) => {
+  console.log(arg);
+});
+
+socket.emit("message", "this is the message to the server");
+
+});
+
+socket.on("disconnect", (reason) => {
+  console.log(`${socket.id} and reason: ${reason}`); // undefined
+});
+</script>
+
+
+</body>
+</html>
