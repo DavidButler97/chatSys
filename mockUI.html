@@ -14,33 +14,51 @@
         <input id="textInput" style="height: 30px; width: 200px; border-color: black; border: 2px; border-style: solid"></div>
     </div>
 
-
-
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 <script type="module">
-    import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js";
+    import { io } from "https://cdn.socket.io/4.6.0/socket.io.esm.min.js";
 </script>
 
 <script>
-
     const socket = io("http://localhost:3000");
+
 
     socket.on("connect", () => {
   console.log(socket.id); // x8WIv7-mJelg7on_ALbx
-
+  
   socket.on("message", (arg) => {
   console.log(arg);
 });
 
+
 socket.emit("message", "this is the message to the server");
 
+
 });
+
 
 socket.on("disconnect", (reason) => {
   console.log(`${socket.id} and reason: ${reason}`); // undefined
 });
-</script>
+// function to send a new message
+function sendMessage() 
+    {
+      // get input element where the message is typed
+      const inputFieldID = document.getElementById('inputFieldID');
 
+      // get the message itself
+      const message = inputFieldID.value;
+
+      // clear input field after getting the message
+      inputFieldID.value = '';
+
+      // emit the 'message' event to the server with username and the message as the data
+      socket.emit('message', { username: 'username', message });
+    }
+</script>
 
 </body>
 </html>
+
+
+
