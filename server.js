@@ -1,30 +1,41 @@
-const express = require('express');
-const http = require('http');
-const socketIO = require('socket.io');
-const app = express();
-const server = http.createServer(app);
-const io = socketIO(server);
-//io is socket
-const port = 3000;
+const express = require("express"); //import the express framework
+const { createServer } = require("http"); //import the http module
+const { Server } = require("socket.io"); //import the socket IO library
 
-// server-side
+
+const app = express(); //create an instance of the express application
+const httpServer = createServer(app); //create a http server using the express application
+//create a socket IO server and attach to http server
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*"
+  }
+});
+
+// event handler for when a client connects to server
 io.on("connection", (socket) => {
-    console.log("new connection");
+    console.log("new connection " + socket.id);
 
-    //handle incoming messages from client
-    io.on('message' , (data) => {
-        console.log('message recieved from client');
-        io.emit('message' , 'gone through');
+
+    //event handler for incoming message eventName
+
+
+    socket.on('message' , (data) => {
+        console.log('message recieved from client: ' + data);
+
+
+        //one to one OR message to a specific socket (specific client)
+        io.to(socket.id).emit('message' , 'response sending out');
     });
 
 
-    io.on("disconnect", () => {
-        console.log("disconnected");
+    //event handler for when a client disconnects from the socket IO server, includes reason why
+    socket.on("disconnect", (reason) => {
+        console.log("disconnected " + reason);
       });
   });
-  
-  server.listen(port, () => {
 
-    console.log('server running on port 3000');
 
-  });
+  console.log("SERVER RUNNING");
+//start server and listen on given port in brackets
+httpServer.listen(3000);
