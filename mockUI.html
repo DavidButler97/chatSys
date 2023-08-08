@@ -24,6 +24,12 @@
     </div>
     
     </div>
+    <button onclick="registerUser()">register user</button>
+    <button onclick="disconnect()">disconnect</button>
+    <button onclick="personalMessage()">personal message</button>
+    <button onclick="joinRoom()">join room</button>
+    <button onclick="roomMessage()"> message room</button>
+    <button onclick="registerLarcera()">Register Larcera</button>
 
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 <script type="module">
@@ -70,6 +76,40 @@ function sendMessage()
       // emit the 'message' event to the server with username and the message as the data
       socket.emit('message', { username: 'username', message: message });
     }
+
+    function registerUser() 
+    {
+      socket.emit('registerUser', "2007boy9");
+    }
+
+    function registerLarcera() 
+    {
+      socket.emit('registerUser', "Larcera"); 
+    }
+
+    function disconnect() 
+    {
+        
+      console.log("we don't actually want to do anything here, disconnect happens automatically when a client loses connection to socket");
+    }
+
+    function personalMessage() 
+    {
+      socket.emit('personalMessage', { "toUserId": "Larcera", "message": "Yo this is my DM to u" });
+    }
+
+    function joinRoom() 
+    {
+        
+      socket.emit('joinRoom', "Global");
+    }
+
+    function roomMessage() 
+    {
+        
+      socket.emit('roomMessage', { "roomName": "Global", "message": "Bandos 2+ min lvl 115, bgs" });
+    }
+
 </script>
 
 </body>
