@@ -30,6 +30,9 @@
     <button onclick="joinRoom()">join room</button>
     <button onclick="roomMessage()"> message room</button>
     <button onclick="registerLarcera()">Register Larcera</button>
+    <button onclick="createRoom()">create new room/channel</button>
+    <button onclick="deleteRoom()">delete room/channel</button>
+    <button onclick="removeUserFromRoom()">remove a specified user from room</button>
 
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 <script type="module">
@@ -101,13 +104,27 @@ function sendMessage()
     function joinRoom() 
     {
         
-      socket.emit('joinRoom', "Global");
+      socket.emit('joinRoom', "partyChat123");
     }
 
     function roomMessage() 
     {
         
       socket.emit('roomMessage', { "roomName": "Global", "message": "Bandos 2+ min lvl 115, bgs" });
+    }
+    function createRoom() 
+    {
+        
+      socket.emit('createRoom',"partyChat123");
+    }
+    function deleteRoom() 
+    {
+        
+      socket.emit('deleteRoom',"partyChat123");
+    }
+    function removeUserFromRoom()
+    {
+      socket.emit('removeUserFromRoom', { "userIdToBeRemovedFromRoom": "Larcera", "roomName": "partyChat123" });
     }
 
 </script>
